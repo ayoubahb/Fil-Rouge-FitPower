@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.main {
+  height: 100vh;
+  background-image: url(../../public/images/84770f_6197f6bd0a9c41788f15876c8dc8e73b_mv2.jpg.png);
+  background-position: right;
+  background-size: cover;
+}
+
+.card {
+  min-height: 350px;
+  max-width: 400px;
+}
+
+textarea {
+  resize: none;
+}
+#card {
+  height: calc(100% - 80px);
+  left: 100%;
+  transition: ease-in-out 700ms;
+}
+
+.product-card{
+  width: 30%;
+}
+.product-table{
+  min-width: 700px;
+}
+.product-table th{
+  width: calc(100% / 5);
+}
