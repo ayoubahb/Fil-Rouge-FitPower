@@ -46,9 +46,10 @@
                 </a>
                 <a href="/checkout">
                     <button class="py-3 px-10 bg-mainColor text-sm font-normal w-full text-white uppercase">
-                    Checkout
-                </button>
+                        Checkout
+                    </button>
                 </a>
             </div>
         </div>
     </div>
+

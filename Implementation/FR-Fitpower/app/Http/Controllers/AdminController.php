@@ -25,7 +25,7 @@ class AdminController extends Controller
         ]);
 
         if (Auth::guard('admin')->attempt($formFields)) {
-            return redirect()->route('admin.orders');
+            return redirect()->route('Admin - Orders');
         }
         return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');
     }

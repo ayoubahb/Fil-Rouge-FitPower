@@ -1,4 +1,4 @@
-<x-layout-admin name='search'>
+<x-layout-admin>
     <div class="mx-auto px-4 sm:px-6 md:px-8 flex justify-between items-center">
         <h1 class="text-4xl font-bold text-mainColor">Products</h1>
         <x-success-flash />

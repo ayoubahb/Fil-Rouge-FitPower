@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     {{-- css style and tailwind --}}
     @vite('resources/css/app.css')
-    <title>Document</title>
+    <title>{{ Route::currentRouteName() }}</title>
 </head>
 
 <body style="font-family: 'Lato', sans-serif;">
@@ -74,21 +74,27 @@
                         <nav class="px-2 space-y-5">
 
                             <a href="/admin/orders"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('admin.orders') ? 'text-mainColor' : 'text-white' }}">
+                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('Admin - Orders') ? 'text-mainColor' : 'text-white' }}">
                                 <i class="fa-solid fa-bag-shopping  mr-5 fa-xl"></i>
                                 Orders
                             </a>
 
                             <a href="/admin/products"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('admin.products') ? 'text-mainColor' : 'text-white' }}">
+                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('Admin - Products') ? 'text-mainColor' : 'text-white' }}">
                                 <i class="fa-solid fa-dolly mr-4 fa-xl"></i>
                                 Products
                             </a>
 
-                            <a href="/admin/subscriptions"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('admin.subscriptions') ? 'text-mainColor' : 'text-white' }}">
-                                <i class="fa-solid fa-dumbbell mr-3 fa-xl"></i>
+                            <a href="/admin/clientsubs"
+                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('Admin - Clients subscriptions') ? 'text-mainColor' : 'text-white' }}">
+                                <i class="fa-solid fa-window-restore mr-3 fa-xl"></i>
                                 Clients’s Subscriptions
+                            </a>
+
+                            <a href="/admin/subscriptions"
+                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('Admin - Subscriptions') ? 'text-mainColor' : 'text-white' }}">
+                                <i class="fa-solid fa-dumbbell mr-3 fa-xl"></i>
+                                Subscriptions
                             </a>
 
 
@@ -108,7 +114,8 @@
                 <div class="flex flex-col flex-grow pt-5 bg-thirdColor overflow-y-auto bg-thirdColor">
                     <div class="flex-shrink-0 flex items-center px-4 my-5">
                         <i class="fa-regular fa-circle-user text-white fa-2xl mr-3"></i>
-                        <span class="text-white text-xs"><b>AYOUB AHABBANE</b><br>Admin</span>
+                        <span
+                            class="text-white text-xs uppercase"><b>{{ Auth::guard('admin')->user()->name }}</b><br>Admin</span>
                     </div>
                     <div class="flex justify-center px-4 my-2">
                         <a href="{{ route('admin.logout') }}">
@@ -120,27 +127,27 @@
                         <nav class="flex-1 px-2 pb-4 space-y-5">
 
                             <a href="/admin/orders"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('admin.orders') ? 'text-mainColor' : 'text-white' }}">
+                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('Admin - Orders') ? 'text-mainColor' : 'text-white' }}">
                                 <i class="fa-solid fa-bag-shopping  mr-5 fa-xl"></i>
                                 Orders
                             </a>
 
                             <a href="/admin/products"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('admin.products') ? 'text-mainColor' : 'text-white' }}">
+                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('Admin - Products') ? 'text-mainColor' : 'text-white' }}">
                                 <i class="fa-solid fa-dolly mr-4 fa-xl"></i>
                                 Products
                             </a>
 
-                            <a href="/admin/subscriptions"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('admin.subscriptions') ? 'text-mainColor' : 'text-white' }}">
-                                <i class="fa-solid fa-dumbbell mr-3 fa-xl"></i>
+                            <a href="/admin/clientsubs"
+                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('Admin - Clients subscriptions') ? 'text-mainColor' : 'text-white' }}">
+                                <i class="fa-solid fa-window-restore mr-3 fa-xl"></i>
                                 Clients’s Subscriptions
                             </a>
-                            
+
                             <a href="/admin/subscriptions"
-                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('admin.subscriptions') ? 'text-mainColor' : 'text-white' }}">
+                                class="group flex items-center px-2 py-2 text-base font-medium rounded-md {{ Route::is('Admin - Subscriptions') ? 'text-mainColor' : 'text-white' }}">
                                 <i class="fa-solid fa-dumbbell mr-3 fa-xl"></i>
-                                Clients’s Subscriptions
+                                Subscriptions
                             </a>
 
 
@@ -179,7 +186,7 @@
                                         </div>
                                         <input id="search-field"
                                             class="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent sm:text-sm"
-                                            placeholder="Search" type="search" name="{{ $name }}">
+                                            placeholder="Search" type="search" name="search">
                                     </div>
                                 </form>
                             </div>
@@ -189,7 +196,7 @@
                 </div>
 
                 <main>
-                    <div class="py-6">
+                    <div class="p-6">
                         {{ $slot }}
                     </div>
                 </main>

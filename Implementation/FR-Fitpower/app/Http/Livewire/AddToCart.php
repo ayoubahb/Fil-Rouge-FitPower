@@ -19,18 +19,25 @@ class AddToCart extends Component
 
     public function addToCart()
     {
+        if (auth()->check()) {
+
         $productExist = Cart::where('product_id', $this->product->id)->where('user_id', auth()->id())->exists();
         if ($productExist) {
-            session()->flash('message', 'This product is already in your cart.');
+            $this->dispatchBrowserEvent('info', ['message' => 'This product is already in your cart']);
         } else {
             Cart::create([
                 'product_id' => $this->product->id,
                 'user_id' => auth()->id(),
                 'quantity' => 1
             ]);
-            session()->flash('message', 'Product added to your cart.');
+            // session()->flash('message', 'Product added to your cart.');       
+            $this->dispatchBrowserEvent('success',['message'=>'Added to cart seccessfuly']);
         }
         $this->emit('refreshCart');
+        }else{
+            $this->dispatchBrowserEvent('error', ['message' => 'You have to login first']);
+        }
+
     }
 
     public function render()

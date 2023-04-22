@@ -1,4 +1,4 @@
-<x-layout-admin name='order_search'>
+<x-layout-admin >
     <div class="mx-auto px-4 sm:px-6 md:px-8 flex justify-between items-center">
         <h1 class="text-4xl font-bold text-mainColor">Orders</h1>
     </div>
@@ -63,7 +63,7 @@
                                             </td>
                                             <td
                                                 class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                <a href="/admin/products/{{ $order->id }}/edit"
+                                                <a href="/admin/orders/{{ $order->id }}/details"
                                                     class="text-indigo-600 hover:text-indigo-900">Details</a>
                                             </td>
                                         </tr>

@@ -47,16 +47,13 @@ class User extends Authenticatable
         return $this->hasMany(Cart::class, 'user_id');
     }
 
-    public function cartTotal()
+    public function subscription()
     {
-        $cartItems = $this->carts()->with('product')->get();
-        $total = 0;
+        return $this->hasOne(ClientSubscription::class, 'user_id');
+    }
 
-        foreach ($cartItems as $cartItem) {
-            $product = $cartItem->product;
-            $total += $product->price * $cartItem->quantity;
-        }
-
-        return $total;
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'userId');
     }
 }

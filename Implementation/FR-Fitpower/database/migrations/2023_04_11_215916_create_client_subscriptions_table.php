@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('subscription_id')->constrained('subscriptions')->onDelete('cascade');
-            $table->timestamp('date_start')->nullable(false);
-            $table->timestamp('date_end')->nullable(false);
+            $table->date('date_start');
+            $table->date('date_end');
+            $table->timestamps();
         });
     }
 

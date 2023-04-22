@@ -35,6 +35,7 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required|numeric',
             'description' => 'required',
+            'category' => 'required',
             'stock' => 'required|integer',
             'images' => 'required|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -50,7 +51,7 @@ class ProductController extends Controller
 
         Product::create($validatedData);
 
-        return redirect()->route('admin.products')->with('success', 'Product added');
+        return redirect()->route('Admin - Products')->with('success', 'Product added');
     }
 
     /**
@@ -83,6 +84,7 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required|numeric',
             'description' => 'required',
+            'category' => 'required',
             'stock' => 'required|integer',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -100,7 +102,7 @@ class ProductController extends Controller
 
         $product->update($validatedData);
 
-        return redirect()->route('admin.products')->with('success', 'Product updated');
+        return redirect()->route('Admin - Products')->with('success', 'Product updated');
     }
 
     /**
@@ -109,6 +111,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('admin.products')->with('success', 'Product deleted');
+        return redirect()->route('Admin - Products')->with('success', 'Product deleted');
     }
 }

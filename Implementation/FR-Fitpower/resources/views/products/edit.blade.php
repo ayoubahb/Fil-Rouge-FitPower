@@ -67,6 +67,24 @@
                     </div>
 
                     <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                        <label for="category" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            Category
+                        </label>
+                        <div class="mt-1 sm:mt-0 sm:col-span-2">
+                            <select id="category" name="category"
+                                class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full">
+                                <option value="">Choose a category</option>
+                                <option value="Protein"{{ $product->category == 'Protein' ? 'selected' : '' }}>Protein</option>
+                                <option value="Shirts" {{ $product->category == 'Shirts' ? 'selected' : '' }}>Shirts</option>
+                                <option value="Accessories" {{ $product->category == 'Accessories' ? 'selected' : '' }}>Accessories</option>
+                            </select>
+                            @error('category')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                         <label for="price" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> Price
                         </label>
                         <div class="mt-1 sm:mt-0 sm:col-span-2">

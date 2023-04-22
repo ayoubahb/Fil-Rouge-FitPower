@@ -41,11 +41,10 @@ class CartPage extends Component
                 $cart->quantity = $quantity;
                 $cart->save();
             }
-
-            session()->flash('message', 'Cart updated.');
             $this->emit('refreshCart');
         }
         $this->mount();
+        $this->dispatchBrowserEvent('success', ['message' => 'Cart updated']);
     }
     public function deleteCart($id)
     {
@@ -55,7 +54,8 @@ class CartPage extends Component
         $this->emit('refreshCart');
 
         $this->mount();
-        session()->flash('message', 'Product deleted from your cart.');
+        $this->dispatchBrowserEvent('success', ['message' => 'Product deleted from your cart']);
+
     }
     public function render()
     {

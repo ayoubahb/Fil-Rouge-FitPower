@@ -9,72 +9,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     @vite('resources/css/app.css')
     <title>{{ Route::currentRouteName() }}</title>
 </head>
 
 <body style="font-family: 'Lato', sans-serif; padding-top: 80px">
-    <div class="hidden fixed w-full top-0 left-0 bg-transparent flex justify-center items-center h-screen z-20"
-        id="login">
-        <div class="max-w-xl w-11/12 p-10 bg-thirdColor text-white relative">
-            <button type="button" class="absolute right-5 top-8" id="close-login">
-                <i class="fa-solid fa-xmark fa-2xl"></i>
-            </button>
-
-            <div class="mb-10">
-                <p class="text-4xl font-bold text-center mb-4">Login</p>
-                <p class="text-center">Please enter your email and password to access your account</p>
-            </div>
-            <x-auth-session-status class="mb-4" :status="session('status')" />
-
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-
-                <!-- Email Address -->
-                <div>
-                    <x-input-label for="email" :value="__('Email')" />
-                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
-                        :value="old('email')" required autofocus autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                </div>
-
-                <!-- Password -->
-                <div class="mt-4">
-                    <x-input-label for="password" :value="__('Password')" />
-
-                    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                        autocomplete="current-password" />
-
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                </div>
-
-                <!-- Remember Me -->
-                <div class="block mt-4">
-                    <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox"
-                            class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-                            name="remember">
-                        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-                    </label>
-                </div>
-
-                <div class="flex items-center justify-end mt-4">
-                    @if (Route::has('password.request'))
-                        <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                            href="{{ route('password.request') }}">
-                            {{ __('Forgot your password?') }}
-                        </a>
-                    @endif
-
-                    <x-primary-button class="ml-3">
-                        {{ __('Log in') }}
-                    </x-primary-button>
-                </div>
-            </form>
-        </div>
+    <div class="fixed top-24 right-5">
+        <x-success-flash/>
     </div>
     <nav
-        class="bg-thirdColor border-gray-200 px-2 sm:px-4 py-2.5 fixed w-full top-0 z-10 bg-secColor h-20 flex items-end">
+        class="bg-thirdColor border-gray-200 px-2 sm:px-4 py-2.5 fixed w-full top-0 z-50 bg-secColor h-20 flex items-end">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
             <a href="/" class="block md:hidden">
                 <img src="/images/logo.png" alt="logo" width="70">
@@ -82,10 +28,10 @@
             <div class="flex items-center md:order-2 gap-5">
                 <livewire:cart-icon />
                 @guest
-                    <div class="flex items-center gap-2 cursor-pointer" id="open-login">
+                    <a href="/login" class="flex items-center gap-2 cursor-pointer">
                         <i class="fa-regular fa-circle-user text-white fa-lg"></i>
                         <span class="text-bold text-white">Connexion</span>
-                    </div>
+                    </a>
                 @endguest
                 @auth
                     <button type="button"
@@ -111,17 +57,18 @@
                         id="user-dropdown">
                         <div class="px-4 py-3">
                             <span class="block text-sm text-gray-900">{{ auth()->user()->name }}</span>
-                            <span class="block text-sm font-medium text-gray-500 truncate">{{ auth()->user()->email }}</span>
+                            <span
+                                class="block text-sm font-medium text-gray-500 truncate">{{ auth()->user()->email }}</span>
                         </div>
                         <ul class="py-2" aria-labelledby="user-menu-button">
                             <li>
-                                <a href="#"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                <a href="/dashboard"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="#"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
-                            </li>
+                            </li> --}}
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -171,32 +118,32 @@
                             class="font-light block py-2 pl-3 pr-4 rounded md:p-0 {{ Route::is('Home')
                                 ? 'text-secColor'
                                 : 'text-white hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
-                                                                                                                                                                                                                                                                                            hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
-                                                                                                                                                                                                                                                                                            hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor' }}">Home</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor' }}">Home</a>
                     </li>
                     <li>
                         <a href="/about"
                             class="font-light font-light block py-2 pl-3 pr-4 text-gray-700 rounded md:p-0 {{ Route::is('About')
                                 ? 'text-secColor'
                                 : 'text-white hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
-                                                                                                                                                                                                                                                                                            hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
-                                                                                                                                                                                                                                                                                            hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor' }}">About</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor' }}">About</a>
                     </li>
                     <li>
                         <a href="/subscriptions"
                             class="font-light block py-2 pl-3 pr-4 text-gray-700 rounded md:p-0 {{ Route::is('Subscriptions')
                                 ? 'text-secColor'
                                 : 'text-white hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
-                                                                                                                                                                                                                                                                                            hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
-                                                                                                                                                                                                                                                                                            hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor' }}">Subscriptions</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor' }}">Subscriptions</a>
                     </li>
                     <li>
                         <a href="/shop"
                             class="font-light block py-2 pl-3 pr-4 text-gray-700 rounded md:p-0 {{ Route::is('Shop')
                                 ? 'text-secColor'
                                 : 'text-white hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
-                                                                                                                                                                                                                                                                                            hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
-                                                                                                                                                                                                                                                                                            hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor' }}">Shop</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    hover:bg-mainColor md:hover:bg-transparent md:hover:text-secColor' }}">Shop</a>
                     </li>
                 </ul>
             </div>
@@ -216,7 +163,7 @@
                     <p class="mb-10">
                         Send us a message. We will reply as soon as possible
                     </p>
-                    <form action="">
+                    <div>
                         <div class="grid grid-cols-2 gap-7">
                             <div class="col-span-1">
                                 <label>Name</label>
@@ -242,7 +189,7 @@
                         <button class="py-2 px-14 bg-transparent font-light border mt-8">
                             Send
                         </button>
-                    </form>
+                    </div>
                 </div>
                 <div class="col-span-4 md:col-span-2 flex flex-col justify-center gap-3">
                     <h4 class="text-2xl border-b-2 pb-3">
@@ -282,8 +229,36 @@
         </div>
     </footer>
     @vite('resources/js/app.js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "messageClass": 'test'
+            }
+        });
+
+        window.addEventListener('success', event => {
+            toastr.success(event.detail.message);
+        });
+
+        window.addEventListener('warning', event => {
+            toastr.warning(event.detail.message);
+        });
+
+        window.addEventListener('error', event => {
+            toastr.error(event.detail.message);
+        });
+        window.addEventListener('info', event => {
+            toastr.info(event.detail.message);
+        });
+    </script>
+
     @livewireScripts
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
+
 </body>
 
 </html>

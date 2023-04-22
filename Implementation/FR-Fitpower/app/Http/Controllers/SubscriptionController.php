@@ -12,7 +12,13 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+        $subscriptions = Subscription::all();
+        foreach ($subscriptions as $subscription) {
+            $subscription->includes = explode(',', $subscription->includes);
+        }
+        return view('subscription.index',[
+            'subscriptions' => $subscriptions,
+        ]);
     }
 
     /**
@@ -20,7 +26,7 @@ class SubscriptionController extends Controller
      */
     public function create()
     {
-        //
+        return view('subscription.create');
     }
 
     /**
@@ -28,15 +34,15 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'includes' => 'required',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Subscription $subscription)
-    {
-        //
+        Subscription::create($validatedData);
+
+        return redirect()->route('Admin - Subscriptions')->with('success', 'Subscription added');
     }
 
     /**
@@ -44,7 +50,9 @@ class SubscriptionController extends Controller
      */
     public function edit(Subscription $subscription)
     {
-        //
+        return view('subscription.edit',[
+            'subscription' => $subscription,
+        ]);
     }
 
     /**
@@ -52,7 +60,15 @@ class SubscriptionController extends Controller
      */
     public function update(Request $request, Subscription $subscription)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'includes' => 'required',
+        ]);
+
+        $subscription->update($validatedData);
+
+        return redirect()->route('Admin - Subscriptions')->with('success', 'Subscription added');
     }
 
     /**
@@ -60,6 +76,7 @@ class SubscriptionController extends Controller
      */
     public function destroy(Subscription $subscription)
     {
-        //
+        $subscription->delete();
+        return redirect()->route('Admin - Subscriptions')->with('success', 'Subscriptions deleted');
     }
 }

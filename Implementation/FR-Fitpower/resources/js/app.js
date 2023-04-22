@@ -25,20 +25,20 @@ openCard.forEach(element => {
 
 
 
-const loginForm = document.querySelector('#login');
-const closeLoginForm = document.querySelector('#close-login');
-const openLoginForm = document.querySelector('#open-login');
+// const loginForm = document.querySelector('#login');
+// const closeLoginForm = document.querySelector('#close-login');
+// const openLoginForm = document.querySelector('#open-login');
 
-if (loginForm != null && closeLoginForm != null && openLoginForm != null) {
-  openLoginForm.addEventListener('click', () => {
-    loginForm.style.display = 'flex'
-    document.body.style.overflowY = "hidden"
-  })
-  closeLoginForm.addEventListener('click', () => {
-    document.body.style.overflow = "unset"
-    loginForm.style.display = 'none'
-  })
-}
+// if (loginForm != null && closeLoginForm != null && openLoginForm != null) {
+//   openLoginForm.addEventListener('click', () => {
+//     loginForm.style.display = 'flex'
+//     document.body.style.overflowY = "hidden"
+//   })
+//   closeLoginForm.addEventListener('click', () => {
+//     document.body.style.overflow = "unset"
+//     loginForm.style.display = 'none'
+//   })
+// }
 
 
 
@@ -88,4 +88,39 @@ preview.forEach(element => {
   })
 });
 
+let sort = document.getElementById('sort');
+
+sort.addEventListener('change', function () {
+  sortProducts(sort.value);
+});
+
+
+function sortProducts(sort) {
+  const products = document.querySelectorAll('.product');
+  const sortedProducts = Array.from(products);
+
+  switch (sort) {
+    case 'price_asc':
+      sortedProducts.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+      break;
+    case 'price_desc':
+      sortedProducts.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+      break;
+    case 'name_asc':
+      sortedProducts.sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
+      break;
+    case 'name_desc':
+      sortedProducts.sort((a, b) => b.dataset.name.localeCompare(a.dataset.name));
+      break;
+    default:
+      break;
+  }
+
+  const container = document.querySelector('.products');
+  container.innerHTML = '';
+
+  sortedProducts.forEach(product => {
+    container.appendChild(product);
+  });
+}
 

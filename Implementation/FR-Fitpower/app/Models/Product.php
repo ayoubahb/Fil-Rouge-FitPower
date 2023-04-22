@@ -12,9 +12,13 @@ class Product extends Model
 
     public function scopeFilter($query, array $filters)
     {
+        if ($filters['category'] ?? false) {
+            $query->where('category', 'like', '%' . request('category') . '%');
+        };
         if ($filters['search'] ?? false) {
             $query->where('name', 'like', '%' . request('search') . '%')
-                ->orWhere('description', 'like', '%' . request('search') . '%');
+                ->orWhere('description', 'like', '%' . request('search') . '%')
+                ->orWhere('category', 'like', '%' . request('search') . '%');
         };
     }
 
@@ -22,6 +26,7 @@ class Product extends Model
         'name',
         'price',
         'description',
+        'category',
         'stock',
         'images',
     ];
@@ -32,13 +37,11 @@ class Product extends Model
 
     public function carts()
     {
-        return $this->hasMany(Cart::class ,'product_id');
+        return $this->hasMany(Cart::class, 'product_id');
     }
 
     public function order()
     {
-        return $this->belongsToMany(Order::class, 'order_items', 'orderId', 'productId');
+        return $this->belongsToMany(Order::class, 'order_items', 'orderId', 'productId')->withPivot('quantity');
     }
-
-
 }

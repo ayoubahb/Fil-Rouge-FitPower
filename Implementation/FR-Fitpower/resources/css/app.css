@@ -37,3 +37,6 @@ textarea {
 .product-table th{
   width: calc(100% / 5);
 }
+#toast-container {
+  margin-top: 80px;
+}

@@ -13,22 +13,12 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //admin dashboard
-        $orders = Order::latest()->get();
+        $orders = Order::with('products')->latest()->get();
         // dd($orders);
         return view('order.index', [
             'orders' => $orders,
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //get chekout page
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -46,6 +36,18 @@ class OrderController extends Controller
         ]);
         $orderData['userId'] = auth()->id();
 
+        $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $product = $cartItem->product;
+            if (!$product->stock <= 0 || $product->stock < $cartItem->quantity) {
+                $total += $product->price * $cartItem->quantity;
+            }
+        }
+        if ($total == 0) {
+            return back()->with('error', "Your order can't be processed");
+        }
+
         if ($orderData['payment_type'] === 'Paypal') {
             session()->put('orderData', $orderData);
             return redirect()->route('paypal.payment');
@@ -56,18 +58,13 @@ class OrderController extends Controller
             return redirect()->route('stripe.payment');
         }
 
-        $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
         $products = [];
-        $total = 0;
         foreach ($cartItems as $cartItem) {
             $product = $cartItem->product;
             $products[$product->id] = ['quantity' => $cartItem->quantity];
-            $total += $product->price * $cartItem->quantity;
-
             $newStockQuantity = $product->stock - $cartItem->quantity;
             $product->update(['stock' => $newStockQuantity]);
         }
-
 
         $orderData['total'] = $total;
         $orderData['payment_status'] = 'Unpaid';
@@ -81,15 +78,24 @@ class OrderController extends Controller
         foreach ($cartItems as $cartItem) {
             $cartItem->delete();
         }
-        return redirect()->route('success')->with('paymentsuccess', 'Your payment is completed');
+        return redirect()->route('success');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Order $order)
     {
-        //
+        $showOrder = Order::with(['products'])->findOrFail($order->id);
+        return view('order.show', [
+            'order' => $showOrder,
+        ]);
+    }
+
+    public function update(Order $order)
+    {
+        $order->update(['order_status' => 'Done']);
+        return redirect()->intended()->with('success','Order confirmed');
     }
 
     /**

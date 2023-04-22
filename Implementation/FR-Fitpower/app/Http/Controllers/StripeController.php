@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Models\ClientSubscription;
 
 class StripeController extends Controller
 {
@@ -28,7 +31,6 @@ class StripeController extends Controller
                 'quantity' => $cartItem->quantity,
             ];
         }
-        // dd($lineItems);
         \Stripe\Stripe::setApiKey(config('stripe.sk'));
 
         $session = \Stripe\Checkout\Session::create([
@@ -56,7 +58,8 @@ class StripeController extends Controller
         }
 
         $order = session()->get('orderData');
-
+        session()->forget('orderData');
+        
         $order['total'] = $total;
         $order['payment_status'] = 'Paid';
         $order['order_status'] = 'In progress';
@@ -69,10 +72,58 @@ class StripeController extends Controller
         foreach ($cartItems as $cartItem) {
             $cartItem->delete();
         }
+
         return redirect()->route('success')->with('paymentsuccess', 'Your payment is completed');
     }
-
-    public function cancel()
+    public function paymentSubs($id)
     {
+        $hasSub = ClientSubscription::where('user_id', auth()->id())
+            ->where('date_end', '>=', Carbon::now()->toDateString())
+            ->orderBy('date_end', 'desc')
+            ->exists();
+
+        if ($hasSub) {
+            return back()->with('error','Already have an active subscription');
+        }
+        $subscription = Subscription::findOrFail($id);
+        session()->put('subscription_id', $id);
+        $lineItems = [
+            [
+                'price_data' => [
+                    'currency' => 'USD',
+                    'product_data' => [
+                        'name' => $subscription->name,
+                    ],
+                    'unit_amount' => $subscription->price * 100,
+                ],
+                'quantity' => '1',
+            ]
+        ];
+
+
+        \Stripe\Stripe::setApiKey(config('stripe.sk'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => $lineItems,
+            'mode'        => 'payment',
+            'success_url' => route('stripesub.success'),
+            'cancel_url'  => route('cancel'),
+        ]);
+
+        return redirect()->away($session->url);
+    }
+
+    public function successSub()
+    {
+        $subscription = [
+            'user_id' => auth()->id(),
+            'subscription_id' => session()->get('subscription_id'),
+            'date_start' => Carbon::now(),
+            'date_end' => Carbon::now()->addMonth(),
+        ];
+
+        ClientSubscription::create($subscription);
+
+        return redirect()->route('success')->with('paymentsuccess', 'Your payment is completed');
     }
 }

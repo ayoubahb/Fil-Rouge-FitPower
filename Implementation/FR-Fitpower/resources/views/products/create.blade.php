@@ -41,7 +41,8 @@
                         <div class="mt-1 sm:mt-0 sm:col-span-2">
                             <div class="max-w-lg flex rounded-md shadow-sm">
                                 <input type="text" name="name" autocomplete="off"
-                                    class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300" value="{{ old('name') }}">
+                                    class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300"
+                                    value="{{ old('name') }}">
                             </div>
                             @error('name')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -55,7 +56,8 @@
                         </label>
                         <div class="mt-1 sm:mt-0 sm:col-span-2">
                             <textarea id="Description" name="description" rows="3"
-                                class="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md" value="{{ old('description') }}"></textarea>
+                                class="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"
+                                value="{{ old('description') }}"></textarea>
                             @error('description')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -63,12 +65,33 @@
                     </div>
 
                     <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                        <label for="price" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> Price ($)
+                        <label for="category" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            Category
+                        </label>
+                        <div class="mt-1 sm:mt-0 sm:col-span-2">
+                            <select id="category" name="category"
+                                class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 w-full">
+                                <option value="">Choose a category</option>
+                                <option value="Protein">Protein</option>
+                                <option value="Shirts">Shirts</option>
+                                <option value="Accessories">Accessories</option>
+                            </select>
+                            @error('category')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                        <label for="price" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> Price
+                            ($)
                         </label>
                         <div class="mt-1 sm:mt-0 sm:col-span-2">
                             <div class="max-w-lg flex rounded-md shadow-sm">
                                 <input type="number" name="price" autocomplete="off"
-                                    class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300" value="{{ old('price') }}">
+                                    class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300"
+                                    value="{{ old('price') }}">
                             </div>
                             @error('price')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -83,7 +106,8 @@
                         <div class="mt-1 sm:mt-0 sm:col-span-2">
                             <div class="max-w-lg flex rounded-md shadow-sm">
                                 <input type="number" name="stock" autocomplete="off"
-                                    class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300" value="{{ old('stock') }}">
+                                    class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded sm:text-sm border-gray-300"
+                                    value="{{ old('stock') }}">
                             </div>
                             @error('stock')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

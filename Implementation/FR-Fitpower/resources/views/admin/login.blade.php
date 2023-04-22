@@ -6,20 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin</title>
-    {{-- <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        mainColor: "#5E3AD4",
-                        secColor: "#A090D6",
-                        thirdColor: "#050715",
-                    },
-                },
-            },
-        };
-    </script> --}}
     @vite('resources/css/app.css')
 </head>
 

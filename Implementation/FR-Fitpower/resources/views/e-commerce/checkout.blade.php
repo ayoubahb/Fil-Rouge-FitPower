@@ -141,15 +141,18 @@
                                             <div class="flex">
                                                 <div class="min-w-0 flex-1">
                                                     <h4 class="text-sm">
-                                                        <a href="#"
+                                                        <a href=""
                                                             class="font-medium text-gray-700 hover:text-gray-800">
-                                                            Basic
-                                                            Tee </a>
+                                                            {{$cart->product->name}} </a>
                                                     </h4>
                                                     <p class="mt-1 text-sm font-medium text-gray-900">
                                                         ${{ $cart->product->price }}</p>
                                                     <p class="mt-1 text-sm font-medium text-gray-900">Quantity :
-                                                        {{ $cart->quantity }}</p>
+                                                        {{ $cart->quantity }}
+                                                        @if ($cart->product->outStock)
+                                                            <span class="text-red-700">Out of stock</span>
+                                                        @endif
+                                                    </p>
                                                 </div>
                                             </div>
 
